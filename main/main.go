@@ -156,7 +156,7 @@ func main() {
 
 	jsonFileName := filepath.Join(dirpath, "Cache.json")
 
-	if _, err := os.Stat(jsonFileName); os.IsExist(err) {
+	if _, err := os.Stat(jsonFileName); err == nil {
 
 		jsBytesFromFile, e := ioutil.ReadFile(jsonFileName)
 
@@ -185,7 +185,9 @@ func main() {
 	for name, value := range imgWallSet.MapImages {
 		filename, e := modules.DownloadImage(value.Url, name, dirpath)
 		imgWallSet.SliceOfNamesImage = append(imgWallSet.SliceOfNamesImage, name)
-		imgWallSet.MapImages[name].Filepath = filename
+		if exist := imgWallSet.MapImages[name].Filepath; exist == "" {
+			imgWallSet.MapImages[name].Filepath = filename
+		}
 		if e != nil {
 			if e.Error() == "File already exists" {
 				continue
