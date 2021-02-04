@@ -249,11 +249,15 @@ func main() {
 	slideShowButtonStart := widget.NewButton(
 		"Start Slideshow",
 		func() {
-			if !slideShowStarted {
-				slideShowStarted = true
-				go SlideShowFunc(&slideShowStarted, imgWallSet, &timeSlideShowInSec)
+			if timeSlideShowInSec != 0 {
+				if !slideShowStarted {
+					slideShowStarted = true
+					go SlideShowFunc(&slideShowStarted, imgWallSet, &timeSlideShowInSec)
+				} else {
+					dialog.ShowInformation("Information", "Slideshow already started!", imgWallSet.win)
+				}
 			} else {
-				dialog.ShowInformation("Information", "Slideshow already started!", imgWallSet.win)
+				dialog.ShowInformation("Information", "Select time", imgWallSet.win)
 			}
 		},
 	)
